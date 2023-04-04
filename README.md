@@ -7,8 +7,8 @@ to convert:
 3. `pip install -r requirements.txt` (preferably in a virtual environment of your choice)
 4. call the script with
 ```bash
-python resolve2xe.py --baysor_results_dir <path to baysor segmentation directory> \
-                     --cellpose_roi_path <path to zipped Cellpose ROIs> \
+python resolve2xe.py --baysor_results_dir <path to baysor segmentation directory from Resolve> \
+                     --cellpose_roi_path <path to zipped Cellpose ROIs from Resolve> \
                      --output_dir <path where you want to write Xenium-like output>
 ```
 
