@@ -4,7 +4,7 @@ convert Resolve biosciences outputs to xenium-like format that can be read by Se
 to convert:
 1. `git clone https://github.com/pvtodorov/resolve2xe.git`
 2. `cd resolve2xe`
-3. `pip install -r requirements.txt` (preferably in a virtual environment of your choice)
+3. `pip install -r requirements.txt` (preferably in a virtual environment like [venv](https://docs.python.org/3/library/venv.html) or [conda](https://conda.io/projects/conda/en/latest/user-guide/getting-started.html))
 4. call the script with
 ```bash
 python resolve2xe.py --baysor_results_dir <path to baysor segmentation directory from Resolve> \
