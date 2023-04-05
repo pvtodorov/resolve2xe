@@ -1,16 +1,14 @@
-library(Seurat)
-
 LoadResolveBaysor <- function(data.dir, fov = 'fov', assay = 'Xenium') {
-  data <- ReadXenium(
+  data <- Seurat::ReadXenium(
     data.dir = data.dir,
     type = c("centroids", "segmentations"),
   )
 
   segmentations.data <- list(
-    "centroids" = CreateCentroids(data$centroids),
-    "segmentation" = CreateSegmentation(data$segmentations)
+    "centroids" = SeuratObject::CreateCentroids(data$centroids),
+    "segmentation" = SeuratObject::CreateSegmentation(data$segmentations)
   )
-  coords <- CreateFOV(
+  coords <- SeuratObject::CreateFOV(
     coords = segmentations.data,
     type = c("segmentation", "centroids"),
     molecules = data$microns,
@@ -26,11 +24,11 @@ LoadResolveBaysor <- function(data.dir, fov = 'fov', assay = 'Xenium') {
   data$matrix[["ControlCodeword"]] = zeros
   data$matrix[["ControlProbe"]] = zeros
   
-  xenium.obj <- CreateSeuratObject(counts = data$matrix[["Gene Expression"]], assay = assay)
+  xenium.obj <- SeuratObject::CreateSeuratObject(counts = data$matrix[["Gene Expression"]], assay = assay)
   
-  xenium.obj[["BlankCodeword"]] <- CreateAssayObject(counts = zeros)
-  xenium.obj[["ControlCodeword"]] <- CreateAssayObject(counts = zeros)
-  xenium.obj[["ControlProbe"]] <- CreateAssayObject(counts = zeros)
+  xenium.obj[["BlankCodeword"]] <- SeuratObject::CreateAssayObject(counts = zeros)
+  xenium.obj[["ControlCodeword"]] <- SeuratObject::CreateAssayObject(counts = zeros)
+  xenium.obj[["ControlProbe"]] <- SeuratObject::CreateAssayObject(counts = zeros)
 
   xenium.obj[[fov]] <- coords
   return(xenium.obj)
