@@ -256,7 +256,7 @@ def make_cells_df(baysor_cell_stats, nucleus2cell_mapping, nucleus_coords_df):
                    'control_probe_counts', 'control_codeword_counts', 'total_counts',
                    'cell_area']
     duplicates = cells_df[cells_df.duplicated(subset=subset_cols, keep=False)]
-    cells_df = cells_df[cells_df.duplicated(subset=subset_cols, keep='first')]
+    cells_df = cells_df[~cells_df.duplicated(subset=subset_cols, keep='first')]
     return cells_df, duplicates
 
 
