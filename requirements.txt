@@ -1,9 +1,5 @@
-argparse
-gzip
 requests
 pandas
-pathlib
-csv
 glob2
 scipy
 shapely
