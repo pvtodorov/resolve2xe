@@ -251,7 +251,13 @@ def make_cells_df(baysor_cell_stats, nucleus2cell_mapping, nucleus_coords_df):
     cells_df = pd.merge(cells_df, nucleus_polygon_df, left_on='ROI_Name_nucleus', right_on='ROI_Name', how='left')
     cells_df = cells_df.rename(columns={"ROI_Name_nucleus": "nucleus_id", "Area": "nucleus_area"})
     cells_df = cells_df.drop(columns=['ROI_Name_cell', 'ROI_Name', "polygon"])
-    return cells_df
+    # find cells that have more than one nucleus intersection
+    subset_cols = ['cell_id', 'x_centroid', 'y_centroid', 'transcript_counts',
+                   'control_probe_counts', 'control_codeword_counts', 'total_counts',
+                   'cell_area']
+    duplicates = cells_df[cells_df.duplicated(subset=subset_cols, keep=False)]
+    cells_df = cells_df[cells_df.duplicated(subset=subset_cols, keep='first')]
+    return cells_df, duplicates
 
 
 def make_transcripts_df(baysor_results_df):
@@ -349,8 +355,9 @@ def convert_resolve_to_xenium(args):
     print("STAGE 6: Writing cells.csv.gz")
     baysor_cell_stats_path = f"{baysor_results_dir}/baysor_cell_stats.csv"
     baysor_cell_stats = pd.read_csv(baysor_cell_stats_path)
-    cells_df = make_cells_df(baysor_cell_stats, nucleus2cell_mapping, nucleus_coords_df)
+    cells_df, duplicates = make_cells_df(baysor_cell_stats, nucleus2cell_mapping, nucleus_coords_df)
     cells_df.to_csv(f"{output_dir}/cells.csv.gz", index=False, compression='gzip')
+    duplicates.to_csv(f"{output_dir}/multinuc_cells.csv.gz", index=False, compression='gzip')
     print("done.")
     print("")
 
