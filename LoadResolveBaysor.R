@@ -30,10 +30,11 @@ LoadResolveBaysor <- function(data.dir, fov = 'fov', assay = 'Xenium') {
   xenium.obj[["ControlCodeword"]] <- SeuratObject::CreateAssayObject(counts = zeros)
   xenium.obj[["ControlProbe"]] <- SeuratObject::CreateAssayObject(counts = zeros)
 
-  baysor_cell_stats = read_csv(paste0(data.dir, 'baysor_cell_stats.csv')) %>%
-    column_to_rownames("cell") %>%
-    select(density, elongation, avg_confidence)
-  xenium.obj = Seurat::AddMetaData(xenium.obj, metadata = baysor_cell_stats)
+  cells = read_csv(paste0(data.dir, 'cells.csv.gz')) %>% 
+    distinct(cell_id, .keep_all = TRUE) %>%
+    column_to_rownames("cell_id") %>%
+    select(cell_area, density, elongation, avg_confidence, nucleus_area)
+  xenium.obj = Seurat::AddMetaData(xenium.obj, metadata = cells)
 
   xenium.obj[[fov]] <- coords
   return(xenium.obj)
