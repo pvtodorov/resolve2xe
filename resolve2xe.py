@@ -357,7 +357,6 @@ def convert_resolve_to_xenium(args):
     print("STAGE 6: Writing cells.csv.gz")
     baysor_cell_stats_path = f"{baysor_results_dir}/baysor_cell_stats.csv"
     baysor_cell_stats = pd.read_csv(baysor_cell_stats_path)
-    baysor_cell_stats.to_csv(f"{output_dir}/baysor_cell_stats.csv", index=False, compression='gzip')
     cells_df, duplicates = make_cells_df(baysor_cell_stats, nucleus2cell_mapping, nucleus_coords_df)
     cells_df.to_csv(f"{output_dir}/cells.csv.gz", index=False, compression='gzip')
     duplicates.to_csv(f"{output_dir}/multinuc_cells.csv.gz", index=False, compression='gzip')
